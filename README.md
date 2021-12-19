@@ -26,6 +26,10 @@ $ yarn add remix-themes
 ### Create your session storage and create a themeSessionResolver
 
 ```ts
+// root.tsx
+
+import {createThemeSessionResolver} from 'remix-themes'
+
 const sessionStorage = createCookieSessionStorage({
   cookie: {
     name: 'remix-themes',
@@ -43,12 +47,9 @@ export const themeSessionResolver = createThemeSessionResolver(sessionStorage)
 ### Setup Remix Themes
 
 ```ts
-import {
-  ThemeProvider,
-  useTheme,
-  PreventFlashOnWrongTheme,
-  createThemeSessionResolver,
-} from 'remix-themes'
+// root.tsx
+
+import {ThemeProvider, useTheme, PreventFlashOnWrongTheme} from 'remix-themes'
 
 // Return the theme from the session storage using the loader
 export const loader: LoaderFunction = async ({request}) => {
@@ -102,6 +103,9 @@ function App() {
 Create a file in `/routes/action/set-theme.ts` with the content below. Ensure
 that you pass the filename to the `ThemeProvider` component.
 
+> Note: You can name the action route whatever you want. Just make sure you pass
+> the correct action name to the `ThemeProvider` component.
+
 This route it's used to store the preferred theme in the session storage when
 the user changes it.
 
@@ -119,7 +123,7 @@ Let's dig into the details.
 ### ThemeProvider
 
 - `specifiedTheme`: The theme from the session storage.
-- `themeAction`: The action name that's used to change the theme in the session
+- `themeAction`: The action name used to change the theme in the session
   storage.
 
 ### useTheme
@@ -138,8 +142,7 @@ useTheme takes no parameters but returns:
   - `setTheme`: A function that takes a theme name and sets it in the session
     storage.
   - `commit`: A function that commits the session storage (Stores all data in
-    the session and returns the Set-Cookie header to be used in the HTTP
-    response.)
+    the session and returns the Set-Cookie header to use in the HTTP response.)
 
 ### PreventFlashOnWrongTheme
 

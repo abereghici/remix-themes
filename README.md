@@ -6,6 +6,7 @@
 
 - ✅ Perfect dark mode in a few lines of code
 - ✅ System setting with prefers-color-scheme
+- ✅ Automatically updates the theme when the user changes the system setting
 - ✅ No flash on load
 
 Check out the

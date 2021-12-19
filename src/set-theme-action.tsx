@@ -24,7 +24,6 @@ const createThemeAction = (
       },
     )
   }
-
   return action
 }
 

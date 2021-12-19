@@ -48,6 +48,11 @@ function ThemeProvider({
   })
 
   const persistTheme = useFetcher()
+  // TODO: remove this when persistTheme is memoized properly
+  const persistThemeRef = React.useRef(persistTheme)
+  React.useEffect(() => {
+    persistThemeRef.current = persistTheme
+  }, [persistTheme])
 
   const mountRun = React.useRef(false)
 
@@ -58,7 +63,10 @@ function ThemeProvider({
     }
     if (!theme) return
 
-    persistTheme.submit({theme}, {action: themeAction, method: 'post'})
+    persistThemeRef.current.submit(
+      {theme},
+      {action: themeAction, method: 'post'},
+    )
   }, [theme])
 
   React.useEffect(() => {

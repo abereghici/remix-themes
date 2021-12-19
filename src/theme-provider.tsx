@@ -25,11 +25,11 @@ const getPreferredTheme = () =>
 function ThemeProvider({
   children,
   specifiedTheme,
-  setThemeAction,
+  themeAction,
 }: {
   children: React.ReactNode
   specifiedTheme: Theme | null
-  setThemeAction: string
+  themeAction: string
 }) {
   const [theme, setTheme] = React.useState<Theme | null>(() => {
     // On the server, if we don't have a specified theme then we should
@@ -58,7 +58,7 @@ function ThemeProvider({
     }
     if (!theme) return
 
-    persistTheme.submit({theme}, {action: setThemeAction, method: 'post'})
+    persistTheme.submit({theme}, {action: themeAction, method: 'post'})
   }, [theme])
 
   React.useEffect(() => {

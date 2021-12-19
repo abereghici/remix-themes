@@ -7,12 +7,12 @@ type ThemeSession = {
   commit: () => Promise<string>
 }
 
-export type GetThemeSessionFn = (request: Request) => Promise<ThemeSession>
+export type ThemeSessionResolver = (request: Request) => Promise<ThemeSession>
 
-const createThemeSession = (
+const createThemeSessionResolver = (
   cookieThemeSession: SessionStorage,
-): GetThemeSessionFn => {
-  return async (request: Request): Promise<ThemeSession> => {
+): ThemeSessionResolver => {
+  const resolver = async (request: Request): Promise<ThemeSession> => {
     const session = await cookieThemeSession.getSession(
       request.headers.get('Cookie'),
     )
@@ -26,6 +26,8 @@ const createThemeSession = (
       commit: () => cookieThemeSession.commitSession(session),
     }
   }
+
+  return resolver
 }
 
-export {createThemeSession}
+export {createThemeSessionResolver}

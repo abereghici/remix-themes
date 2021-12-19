@@ -1,12 +1,12 @@
 import {ActionFunction, json} from '@remix-run/server-runtime'
 import {isTheme} from './theme-provider'
-import {GetThemeSessionFn} from './theme.server'
+import {ThemeSessionResolver} from './theme.server'
 
-const createSetThemeAction = (
-  getThemeSession: GetThemeSessionFn,
+const createThemeAction = (
+  themeSessionResolver: ThemeSessionResolver,
 ): ActionFunction => {
   const action: ActionFunction = async ({request}) => {
-    const session = await getThemeSession(request)
+    const session = await themeSessionResolver(request)
     const requestText = await request.text()
     const form = new URLSearchParams(requestText)
     const theme = form.get('theme')
@@ -28,4 +28,4 @@ const createSetThemeAction = (
   return action
 }
 
-export {createSetThemeAction}
+export {createThemeAction}

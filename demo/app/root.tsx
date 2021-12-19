@@ -1,5 +1,7 @@
 import {
+  createCookieSessionStorage,
   Links,
+  LinksFunction,
   LiveReload,
   LoaderFunction,
   Meta,
@@ -9,18 +11,41 @@ import {
   useLoaderData,
 } from 'remix'
 import type {MetaFunction} from 'remix'
-import {ThemeProvider, useTheme, PreventFlashOnWrongTheme} from 'remix-themes'
-import {getThemeSession} from './theme'
+import {
+  ThemeProvider,
+  useTheme,
+  PreventFlashOnWrongTheme,
+  createThemeSessionResolver,
+} from 'remix-themes'
+import styles from './styles/index.css'
+
+export const links: LinksFunction = () => {
+  return [{rel: 'stylesheet', href: styles}]
+}
 
 export const meta: MetaFunction = () => {
   return {title: 'New Remix App'}
 }
 
+export const themeSessionResolver = createThemeSessionResolver(
+  createCookieSessionStorage({
+    cookie: {
+      name: 'remix-themes',
+      secure: true,
+      sameSite: 'lax',
+      secrets: ['s3cr3t'],
+      path: '/',
+      expires: new Date('2100-08-14'),
+      httpOnly: true,
+    },
+  }),
+)
+
 export const loader: LoaderFunction = async ({request}) => {
-  const themeSession = await getThemeSession(request)
+  const {getTheme} = await themeSessionResolver(request)
 
   return {
-    theme: themeSession.getTheme(),
+    theme: getTheme(),
   }
 }
 
@@ -48,12 +73,8 @@ function App() {
 
 export default function AppWithProviders() {
   const data = useLoaderData()
-
   return (
-    <ThemeProvider
-      specifiedTheme={data.theme}
-      setThemeAction="action/set-theme"
-    >
+    <ThemeProvider specifiedTheme={data.theme} themeAction="action/set-theme">
       <App />
     </ThemeProvider>
   )

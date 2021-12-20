@@ -1,4 +1,4 @@
-import {ActionFunction, json} from '@remix-run/server-runtime'
+import {ActionFunction, json} from 'remix'
 import {isTheme} from './theme-provider'
 import {ThemeSessionResolver} from './theme.server'
 

@@ -14,7 +14,7 @@ export default function Index() {
       >
         Toggle theme
       </button>
-      <Link to="/about">About</Link>
+      <Link to="/">Home</Link>
     </div>
   )
 }

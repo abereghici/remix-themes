@@ -1,5 +1,4 @@
 import * as React from 'react'
-import {useFetcher} from 'remix'
 
 enum Theme {
   DARK = 'dark',
@@ -47,13 +46,6 @@ function ThemeProvider({
     return getPreferredTheme()
   })
 
-  const persistTheme = useFetcher()
-  // TODO: remove this when persistTheme is memoized properly
-  const persistThemeRef = React.useRef(persistTheme)
-  React.useEffect(() => {
-    persistThemeRef.current = persistTheme
-  }, [persistTheme])
-
   const mountRun = React.useRef(false)
 
   React.useEffect(() => {
@@ -63,10 +55,13 @@ function ThemeProvider({
     }
     if (!theme) return
 
-    persistThemeRef.current.submit(
-      {theme},
-      {action: themeAction, method: 'post'},
-    )
+    // TODO: replace with useFetcher once the reloading bug is fixed
+    const searchParams = new URLSearchParams()
+    searchParams.set('_data', 'routes/action/refresh-cache')
+    fetch(`${themeAction}?${searchParams.toString()}`, {
+      method: 'POST',
+      body: JSON.stringify({theme}),
+    })
   }, [theme])
 
   React.useEffect(() => {

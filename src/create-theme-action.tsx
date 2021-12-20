@@ -1,15 +1,14 @@
-import {ActionFunction, json} from 'remix'
+import {ActionFunction, json} from '@remix-run/server-runtime'
 import {isTheme} from './theme-provider'
-import {ThemeSessionResolver} from './theme.server'
+import {ThemeSessionResolver} from './theme-server'
 
 const createThemeAction = (
   themeSessionResolver: ThemeSessionResolver,
 ): ActionFunction => {
   const action: ActionFunction = async ({request}) => {
     const session = await themeSessionResolver(request)
-    const requestText = await request.text()
-    const form = new URLSearchParams(requestText)
-    const theme = form.get('theme')
+    const {theme} = await request.json()
+
     if (!isTheme(theme))
       return json({
         success: false,

@@ -35,7 +35,6 @@
   "devDependencies": {
     "@remix-run/server-runtime": "^1.1.1",
     "@remix-run/react": "^1.1.1",
-    "remix": "^1.1.1",
     "@types/react": "^17.0.37",
     "@typescript-eslint/eslint-plugin": "^4.23.0",
     "@typescript-eslint/parser": "^4.23.0",
@@ -55,9 +54,7 @@
     "typescript": "^4.5.4"
   },
   "peerDependencies": {
-    "remix": "^1.1.1",
     "@remix-run/server-runtime": "^1.1.1",
-    "@remix-run/react": "^1.1.1",
-    "react": "^17.0.2"
+    "@remix-run/react": "^1.1.1"
   }
 }

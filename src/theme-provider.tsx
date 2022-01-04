@@ -56,9 +56,7 @@ function ThemeProvider({
     if (!theme) return
 
     // TODO: replace with useFetcher once the reloading bug is fixed
-    const searchParams = new URLSearchParams()
-    searchParams.set('_data', 'routes/action/refresh-cache')
-    fetch(`${themeAction}?${searchParams.toString()}`, {
+    fetch(`${themeAction}`, {
       method: 'POST',
       body: JSON.stringify({theme}),
     })

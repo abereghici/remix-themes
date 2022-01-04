@@ -65,7 +65,7 @@ export const loader: LoaderFunction = async ({request}) => {
 export default function AppWithProviders() {
   const data = useLoaderData()
   return (
-    <ThemeProvider specifiedTheme={data.theme} themeAction="action/set-theme">
+    <ThemeProvider specifiedTheme={data.theme} themeAction="/action/set-theme">
       <App />
     </ThemeProvider>
   )
@@ -104,7 +104,8 @@ Create a file in `/routes/action/set-theme.ts` with the content below. Ensure
 that you pass the filename to the `ThemeProvider` component.
 
 > Note: You can name the action route whatever you want. Just make sure you pass
-> the correct action name to the `ThemeProvider` component.
+> the correct action name to the `ThemeProvider` component. Make sure to use absolute
+> path when using nested routing.
 
 This route it's used to store the preferred theme in the session storage when
 the user changes it.

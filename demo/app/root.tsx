@@ -74,7 +74,7 @@ function App() {
 export default function AppWithProviders() {
   const data = useLoaderData()
   return (
-    <ThemeProvider specifiedTheme={data.theme} themeAction="action/set-theme">
+    <ThemeProvider specifiedTheme={data.theme} themeAction="/action/set-theme">
       <App />
     </ThemeProvider>
   )

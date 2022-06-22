@@ -80,7 +80,7 @@ function App() {
   const data = useLoaderData()
   const [theme] = useTheme()
   return (
-    <html lang="en" className={theme ?? ''}>
+    <html lang="en" data-theme={theme}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />

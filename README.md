@@ -120,7 +120,7 @@ export const action = createThemeAction(themeSessionResolver)
 
 ## API
 
-Let's dig into the details:
+Let's dig into the details.
 
 ### ThemeProvider
 

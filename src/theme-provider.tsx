@@ -1,4 +1,5 @@
-import * as React from 'react'
+import type {Dispatch, ReactNode, SetStateAction} from 'react'
+import {createContext, useState, useContext, useEffect, useRef} from 'react'
 
 enum Theme {
   DARK = 'dark',
@@ -6,12 +7,9 @@ enum Theme {
 }
 const themes: Array<Theme> = Object.values(Theme)
 
-type ThemeContextType = [
-  Theme | null,
-  React.Dispatch<React.SetStateAction<Theme | null>>,
-]
+type ThemeContextType = [Theme | null, Dispatch<SetStateAction<Theme | null>>]
 
-const ThemeContext = React.createContext<ThemeContextType | undefined>(
+const ThemeContext = createContext<ThemeContextType | undefined>(
   // eslint-disable-next-line unicorn/no-useless-undefined
   undefined,
 )
@@ -26,11 +24,11 @@ function ThemeProvider({
   specifiedTheme,
   themeAction,
 }: {
-  children: React.ReactNode
+  children: ReactNode
   specifiedTheme: Theme | null
   themeAction: string
 }) {
-  const [theme, setTheme] = React.useState<Theme | null>(() => {
+  const [theme, setTheme] = useState<Theme | null>(() => {
     // On the server, if we don't have a specified theme then we should
     // return null and the clientThemeCode will set the theme for us
     // before hydration. Then (during hydration), this code will get the same
@@ -46,23 +44,22 @@ function ThemeProvider({
     return getPreferredTheme()
   })
 
-  const mountRun = React.useRef(false)
+  const mountRun = useRef(false)
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!mountRun.current) {
       mountRun.current = true
       return
     }
     if (!theme) return
 
-    // TODO: replace with useFetcher once the reloading bug is fixed
     fetch(`${themeAction}`, {
       method: 'POST',
       body: JSON.stringify({theme}),
     })
   }, [theme])
 
-  React.useEffect(() => {
+  useEffect(() => {
     const mediaQuery = window.matchMedia(prefersLightMQ)
     const handleChange = () => {
       setTheme(mediaQuery.matches ? Theme.LIGHT : Theme.DARK)
@@ -133,7 +130,7 @@ function PreventFlashOnWrongTheme({ssrTheme}: {ssrTheme: boolean}) {
 }
 
 function useTheme() {
-  const context = React.useContext(ThemeContext)
+  const context = useContext(ThemeContext)
   if (context === undefined) {
     throw new Error('useTheme must be used within a ThemeProvider')
   }

@@ -26,7 +26,7 @@ $ yarn add remix-themes
 ### Create your session storage and create a themeSessionResolver
 
 ```ts
-// root.tsx
+// sessions.server.tsx
 
 import {createThemeSessionResolver} from 'remix-themes'
 
@@ -50,6 +50,7 @@ export const themeSessionResolver = createThemeSessionResolver(sessionStorage)
 // root.tsx
 
 import {ThemeProvider, useTheme, PreventFlashOnWrongTheme} from 'remix-themes'
+import {themeSessionResolver} from './sessions.server'
 
 // Return the theme from the session storage using the loader
 export const loader: LoaderFunction = async ({request}) => {
@@ -104,15 +105,15 @@ Create a file in `/routes/action/set-theme.ts` with the content below. Ensure
 that you pass the filename to the `ThemeProvider` component.
 
 > Note: You can name the action route whatever you want. Just make sure you pass
-> the correct action name to the `ThemeProvider` component. Make sure to use absolute
-> path when using nested routing.
+> the correct action name to the `ThemeProvider` component. Make sure to use
+> absolute path when using nested routing.
 
 This route it's used to store the preferred theme in the session storage when
 the user changes it.
 
 ```ts
 import {createThemeAction} from 'remix-themes'
-import {themeSessionResolver} from '../../root'
+import {themeSessionResolver} from './sessions.server'
 
 export const action = createThemeAction(themeSessionResolver)
 ```

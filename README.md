@@ -73,14 +73,14 @@ export default function AppWithProviders() {
 }
 
 // Use the theme in your app.
-// PreventFlashOnWrongTheme is used to prevent flash on wrong theme.
-// If the theme is missing in session storage, it will get the browser theme.
+// If the theme is missing in session storage, PreventFlashOnWrongTheme will get
+// the browser theme before hydration and will prevent a flash in browser.
 // The client code runs conditionally, it won't be rendered if we have a theme in session storage.
 function App() {
   const data = useLoaderData()
   const [theme] = useTheme()
   return (
-    <html lang="en" data-theme={theme}>
+    <html lang="en" data-theme={theme ?? ''}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -149,7 +149,10 @@ useTheme takes no parameters but returns:
 ### PreventFlashOnWrongTheme
 
 On the server, "theme" might be `null` so `PreventFlashOnWrongTheme` ensures
-that this is correct before hydration.
+that this is correct before hydration. If the theme is null on the server, this
+component will set the browser theme on the `html` element in a `data-theme`
+attribute if exists, otherwise it will be set to a `class` attribute. If both
+`data-theme` and `class` are set, the `data-theme` will be used.
 
 - `ssrTheme`: boolean value that indicates if we have a theme in the session
   storage.

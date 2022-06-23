@@ -82,12 +82,20 @@ const clientThemeCode = `
     : 'dark';
   
   const cl = document.documentElement.classList;
-  
-  const themeAlreadyApplied = cl.contains('light') || cl.contains('dark');
-  if (!themeAlreadyApplied) {
-    cl.add(theme);
-  } 
+  const dataAttr = document.documentElement.dataset.theme;
 
+  if (dataAttr != null) {
+    const themeAlreadyApplied = dataAttr === 'light' || dataAttr === 'dark';
+    if (!themeAlreadyApplied) {
+      document.documentElement.dataset.theme = theme;
+    }
+  } else {
+    const themeAlreadyApplied = cl.contains('light') || cl.contains('dark');
+    if (!themeAlreadyApplied) {
+      cl.add(theme);
+    }
+  }
+  
   const meta = document.querySelector('meta[name=color-scheme]');
   if (meta) {
     if (theme === 'dark') {

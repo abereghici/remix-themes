@@ -16,6 +16,8 @@ const ThemeContext = createContext<ThemeContextType | undefined>(
 ThemeContext.displayName = 'ThemeContext'
 
 const prefersLightMQ = '(prefers-color-scheme: light)'
+const prefersDarkMQ = '(prefers-color-scheme: dark)'
+
 const getPreferredTheme = () =>
   window.matchMedia(prefersLightMQ).matches ? Theme.LIGHT : Theme.DARK
 
@@ -57,6 +59,7 @@ function ThemeProvider({
       method: 'POST',
       body: JSON.stringify({theme}),
     })
+    localStorage.theme = theme
   }, [theme])
 
   useEffect(() => {
@@ -67,6 +70,19 @@ function ThemeProvider({
     mediaQuery.addEventListener('change', handleChange)
     return () => mediaQuery.removeEventListener('change', handleChange)
   }, [])
+
+  useEffect(() => {
+    if (
+      localStorage.theme === 'dark' ||
+      (!('theme' in localStorage) && window.matchMedia(prefersDarkMQ).matches)
+    ) {
+      document.documentElement.dataset.theme = 'dark'
+      setTheme(() => Theme.DARK)
+    } else {
+      document.documentElement.dataset.theme = 'light'
+      setTheme(() => Theme.LIGHT)
+    }
+  }, [setTheme])
 
   return (
     <ThemeContext.Provider value={[theme, setTheme]}>

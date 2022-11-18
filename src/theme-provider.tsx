@@ -65,6 +65,7 @@ function ThemeProvider({
   useEffect(() => {
     const mediaQuery = window.matchMedia(prefersLightMQ)
     const handleChange = () => {
+      localStorage.theme = mediaQuery.matches ? Theme.LIGHT : Theme.DARK
       setTheme(mediaQuery.matches ? Theme.LIGHT : Theme.DARK)
     }
     mediaQuery.addEventListener('change', handleChange)

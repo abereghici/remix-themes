@@ -10,8 +10,8 @@
 - ✅ No flash on load
 
 Check out the
-[Example](https://github.com/abereghici/remix-themes/tree/main/demo) to see it
-in action.
+[Example](https://github.com/abereghici/remix-themes/tree/main/packages/remix-themes-app)
+to see it in action.
 
 ## Install
 
@@ -32,17 +32,21 @@ import {createThemeSessionResolver} from 'remix-themes'
 
 const sessionStorage = createCookieSessionStorage({
   cookie: {
-    name: 'remix-themes',
-    secure: true,
-    sameSite: 'lax',
-    secrets: ['s3cr3t'],
+    name: '__remix-themes',
+    domain: 'localhost',
     path: '/',
     httpOnly: true,
+    sameSite: 'lax',
+    secrets: ['s3cr3t'],
+    // secure: true,
   },
 })
 
 export const themeSessionResolver = createThemeSessionResolver(sessionStorage)
 ```
+
+Note: make sure you have `domain` property set and `secure` flag activated only
+for your production (SSL) environment. Otherwise, Safari won't store the cookie.
 
 ### Setup Remix Themes
 

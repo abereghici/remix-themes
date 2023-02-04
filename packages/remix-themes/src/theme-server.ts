@@ -1,5 +1,6 @@
-import {SessionStorage} from '@remix-run/server-runtime'
-import {Theme, isTheme} from './theme-provider'
+import type {SessionStorage} from '@remix-run/server-runtime'
+import type {Theme} from './theme-provider'
+import {isTheme} from './theme-provider'
 
 type ThemeSession = {
   getTheme: () => Theme | null

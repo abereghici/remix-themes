@@ -30,7 +30,8 @@ Now you'll need to pick a host to deploy it to.
 
 ### DIY
 
-If you're familiar with deploying node applications, the built-in Remix app server is production-ready.
+If you're familiar with deploying node applications, the built-in Remix app
+server is production-ready.
 
 Make sure to deploy the output of `remix build`
 
@@ -39,7 +40,9 @@ Make sure to deploy the output of `remix build`
 
 ### Using a Template
 
-When you ran `npx create-remix@latest` there were a few choices for hosting. You can run that again to create a new project, then copy over your `app/` folder to the new project that's pre-configured for your target server.
+When you ran `npx create-remix@latest` there were a few choices for hosting. You
+can run that again to create a new project, then copy over your `app/` folder to
+the new project that's pre-configured for your target server.
 
 ```sh
 cd ..

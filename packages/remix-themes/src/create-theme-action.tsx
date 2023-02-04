@@ -1,6 +1,7 @@
-import {ActionFunction, json} from '@remix-run/server-runtime'
+import type {ActionFunction} from '@remix-run/server-runtime'
+import {json} from '@remix-run/server-runtime'
 import {isTheme} from './theme-provider'
-import {ThemeSessionResolver} from './theme-server'
+import type {ThemeSessionResolver} from './theme-server'
 
 const createThemeAction = (
   themeSessionResolver: ThemeSessionResolver,

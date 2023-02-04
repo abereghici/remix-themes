@@ -34,6 +34,7 @@ export const loader: LoaderFunction = async ({request}) => {
 function App() {
   const data = useLoaderData()
   const [theme] = useTheme()
+
   return (
     <html lang="en" data-theme={theme ?? ''}>
       <head>

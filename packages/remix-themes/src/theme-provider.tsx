@@ -9,10 +9,7 @@ const themes: Array<Theme> = Object.values(Theme)
 
 type ThemeContextType = [Theme | null, Dispatch<SetStateAction<Theme | null>>]
 
-const ThemeContext = createContext<ThemeContextType | undefined>(
-  // eslint-disable-next-line unicorn/no-useless-undefined
-  undefined,
-)
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 ThemeContext.displayName = 'ThemeContext'
 
 const prefersLightMQ = '(prefers-color-scheme: light)'
@@ -57,7 +54,7 @@ function ThemeProvider({
       method: 'POST',
       body: JSON.stringify({theme}),
     })
-  }, [theme])
+  }, [theme, themeAction])
 
   useEffect(() => {
     const mediaQuery = window.matchMedia(prefersLightMQ)

@@ -1,62 +1,24 @@
 {
-  "name": "remix-themes",
-  "version": "0.0.0-semantically-released",
-  "description": "An abstraction for themes in your Remix_run app.",
-  "keywords": [
-    "remix",
-    "themes",
-    "dark mode",
-    "light mode"
-  ],
-  "homepage": "https://github.com/abereghici/remix-themes#readme",
-  "bugs": {
-    "url": "https://github.com/abereghici/remix-themes/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/abereghici/remix-themes.git"
-  },
-  "license": "MIT",
-  "author": "Alexandru Bereghici",
-  "main": "./build/index.js",
-  "types": "./build/index.d.ts",
-  "files": [
-    "build",
-    "package.json",
-    "README.md"
+  "name": "remix-themes-monorepo",
+  "private": true,
+  "workspaces": [
+    "packages/remix-themes",
+    "packages/remix-themes-app"
   ],
   "scripts": {
-    "build": "tsc --project tsconfig.json",
-    "typecheck": "tsc --project tsconfig.json --noEmit",
-    "lint": "eslint --ext .ts,.tsx src/",
-    "validate": "npm-run-all --parallel typecheck lint"
+    "lint": "eslint --cache .",
+    "lint:fix": "yarn lint --fix",
+    "format": "prettier --ignore-path .eslintignore --write ./ && npm run lint:fix",
+    "validate": "yarn workspace remix-themes validate",
+    "build": "yarn workspace remix-themes build",
+    "start:app": "yarn workspace remix-themes-app dev"
   },
-  "dependencies": {},
   "devDependencies": {
-    "@remix-run/server-runtime": "^1.6.0",
-    "@remix-run/react": "^1.6.0",
-    "@types/react": "^17.0.45",
-    "@types/react-dom": "^17.0.17",
-    "@typescript-eslint/eslint-plugin": "^5.29.0",
-    "@typescript-eslint/parser": "^5.29.0",
-    "eslint": "^8.18.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-cypress": "^2.12.1",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-jest": "^26.5.3",
-    "eslint-plugin-jest-dom": "^4.0.2",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-promise": "^6.0.0",
-    "eslint-plugin-testing-library": "^5.5.1",
-    "eslint-plugin-unicorn": "^42.0.0",
-    "npm-run-all": "^4.1.5",
-    "prettier": "^2.7.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "typescript": "^4.7.4"
+    "@remix-run/eslint-config": "latest",
+    "eslint": "^8.33.0",
+    "prettier": "^2.8.3"
   },
-  "peerDependencies": {
-    "@remix-run/server-runtime": "^1.6.0",
-    "@remix-run/react": "^1.6.0"
+  "engines": {
+    "node": ">=14"
   }
 }

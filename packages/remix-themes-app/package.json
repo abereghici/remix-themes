@@ -1,0 +1,29 @@
+{
+  "name": "remix-themes-app",
+  "version": "0.0.1",
+  "private": true,
+  "sideEffects": false,
+  "scripts": {
+    "build": "remix build",
+    "dev": "remix dev",
+    "start": "remix-serve build"
+  },
+  "dependencies": {
+    "@remix-run/node": "latest",
+    "@remix-run/react": "latest",
+    "@remix-run/serve": "latest",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "remix-themes": "1.1.6"
+  },
+  "devDependencies": {
+    "@remix-run/dev": "latest",
+    "@remix-run/eslint-config": "latest",
+    "@types/react": "^18.0.27",
+    "@types/react-dom": "^18.0.10",
+    "typescript": "^4.9.5"
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}

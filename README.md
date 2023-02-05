@@ -33,7 +33,7 @@ import {createThemeSessionResolver} from 'remix-themes'
 const sessionStorage = createCookieSessionStorage({
   cookie: {
     name: '__remix-themes',
-    domain: 'localhost',
+    // domain: 'remix.run',
     path: '/',
     httpOnly: true,
     sameSite: 'lax',
@@ -45,8 +45,9 @@ const sessionStorage = createCookieSessionStorage({
 export const themeSessionResolver = createThemeSessionResolver(sessionStorage)
 ```
 
-Note: make sure you have `domain` property set and `secure` flag activated only
-for your production (SSL) environment. Otherwise, Safari won't store the cookie.
+Note: make sure you have `domain` and `secure` parameters set only for your
+production environment. Otherwise, Safari won't store the cookie if you set
+these parameters on localhost.
 
 ### Setup Remix Themes
 

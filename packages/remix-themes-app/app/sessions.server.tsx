@@ -5,7 +5,7 @@ export const themeSessionResolver = createThemeSessionResolver(
   createCookieSessionStorage({
     cookie: {
       name: '__remix-themes',
-      domain: 'localhost',
+      // domain: 'remix.run',
       path: '/',
       httpOnly: true,
       sameSite: 'lax',

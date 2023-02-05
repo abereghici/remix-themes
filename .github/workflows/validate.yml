@@ -57,6 +57,9 @@ jobs:
       - name: 📥 Install deps
         run: yarn --frozen-lockfile
 
+      - name: ▶️ Run validate script
+        run: yarn validate
+
       - name: 🏗 Run build script
         run: yarn build
 

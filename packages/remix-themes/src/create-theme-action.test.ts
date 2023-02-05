@@ -1,6 +1,6 @@
 import {createCookieSessionStorage} from '@remix-run/node'
-import {createThemeSessionResolver} from 'remix-themes'
 import {createThemeAction} from './create-theme-action'
+import {createThemeSessionResolver} from './theme-server'
 import {themes} from './theme-provider'
 
 function createThemedRequest(theme: string) {

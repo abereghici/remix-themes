@@ -7,9 +7,13 @@ export default defineConfig({
     globals: true,
     environment: 'happy-dom',
     coverage: {
-      exclude: ['**/build', '**/src/**/*.test.ts', '**/src/**/*.test.tsx'],
+      exclude: ['**/build'],
       excludeNodeModules: true,
     },
+    include: [
+      'packages/remix-themes/src/**/*.test.ts',
+      'packages/remix-themes/src/**/*.test.tsx',
+    ],
     setupFiles: ['./setup-test-env.ts'],
   },
 })

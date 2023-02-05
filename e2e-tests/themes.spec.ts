@@ -17,5 +17,7 @@ test('toggling the theme', async ({page}) => {
 
   await expect(toggler()).toBeVisible()
 
+  await expect.soft(page).toHaveURL('test')
+
   await expect(html()).toHaveAttribute(themeAttribute, oppositeTheme)
 })

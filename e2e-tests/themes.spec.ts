@@ -13,5 +13,7 @@ test('toggling the theme', async ({page}) => {
 
   await page.reload()
 
+  await expect(toggler()).toBeVisible()
+
   await expect(html()).toHaveAttribute('data-theme', 'dark')
 })

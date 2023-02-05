@@ -3,18 +3,23 @@ import {json} from '@remix-run/server-runtime'
 import {isTheme} from './theme-provider'
 import type {ThemeSessionResolver} from './theme-server'
 
-const createThemeAction = (
+export const createThemeAction = (
   themeSessionResolver: ThemeSessionResolver,
 ): ActionFunction => {
   const action: ActionFunction = async ({request}) => {
     const session = await themeSessionResolver(request)
     const {theme} = await request.json()
 
-    if (!isTheme(theme))
+    if (!isTheme(theme)) {
+      let message = theme
+        ? `theme value of ${theme} is not a valid theme.`
+        : `empty theme provided`
+
       return json({
         success: false,
-        message: `theme value of ${theme} is not a valid theme.`,
+        message,
       })
+    }
 
     session.setTheme(theme)
     return json(
@@ -26,5 +31,3 @@ const createThemeAction = (
   }
   return action
 }
-
-export {createThemeAction}

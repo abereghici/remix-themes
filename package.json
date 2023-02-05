@@ -6,17 +6,28 @@
     "packages/remix-themes-app"
   ],
   "scripts": {
+    "build": "yarn workspace remix-themes build",
+    "format": "prettier --ignore-path .eslintignore --write ./ && npm run lint:fix",
     "lint": "eslint --cache .",
     "lint:fix": "yarn lint --fix",
-    "format": "prettier --ignore-path .eslintignore --write ./ && npm run lint:fix",
-    "validate": "yarn workspace remix-themes validate",
-    "build": "yarn workspace remix-themes build",
-    "start:app": "yarn workspace remix-themes-app dev"
+    "start:app": "yarn workspace remix-themes-app dev",
+    "test": "vitest -w=false",
+    "test:watch": "vitest -w",
+    "typecheck": "yarn workspace remix-themes typecheck",
+    "validate": "npm-run-all --parallel typecheck lint test"
   },
   "devDependencies": {
     "@remix-run/eslint-config": "latest",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/react-hooks": "^8.0.1",
+    "@vitest/coverage-c8": "^0.28.4",
     "eslint": "^8.33.0",
-    "prettier": "^2.8.3"
+    "eslint-plugin-testing-library": "^5.10.0",
+    "happy-dom": "^8.2.6",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.8.3",
+    "vitest": "^0.28.4"
   },
   "engines": {
     "node": ">=14"

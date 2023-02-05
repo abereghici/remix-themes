@@ -1,11 +1,12 @@
 import type {Dispatch, ReactNode, SetStateAction} from 'react'
 import {createContext, useState, useContext, useEffect, useRef} from 'react'
 
-enum Theme {
+export enum Theme {
   DARK = 'dark',
   LIGHT = 'light',
 }
-const themes: Array<Theme> = Object.values(Theme)
+
+export const themes: Array<Theme> = Object.values(Theme)
 
 type ThemeContextType = [Theme | null, Dispatch<SetStateAction<Theme | null>>]
 
@@ -15,16 +16,19 @@ ThemeContext.displayName = 'ThemeContext'
 const prefersLightMQ = '(prefers-color-scheme: light)'
 const getPreferredTheme = () =>
   window.matchMedia(prefersLightMQ).matches ? Theme.LIGHT : Theme.DARK
+export const mediaQuery = window.matchMedia(prefersLightMQ)
 
-function ThemeProvider({
-  children,
-  specifiedTheme,
-  themeAction,
-}: {
+export type ThemeProviderProps = {
   children: ReactNode
   specifiedTheme: Theme | null
   themeAction: string
-}) {
+}
+
+export function ThemeProvider({
+  children,
+  specifiedTheme,
+  themeAction,
+}: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme | null>(() => {
     // On the server, if we don't have a specified theme then we should
     // return null and the clientThemeCode will set the theme for us
@@ -57,9 +61,8 @@ function ThemeProvider({
   }, [theme, themeAction])
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia(prefersLightMQ)
-    const handleChange = () => {
-      setTheme(mediaQuery.matches ? Theme.LIGHT : Theme.DARK)
+    const handleChange = (ev: MediaQueryListEvent) => {
+      setTheme(ev.matches ? Theme.LIGHT : Theme.DARK)
     }
     mediaQuery.addEventListener('change', handleChange)
     return () => mediaQuery.removeEventListener('change', handleChange)
@@ -104,7 +107,7 @@ const clientThemeCode = `
 })();
 `
 
-function PreventFlashOnWrongTheme({ssrTheme}: {ssrTheme: boolean}) {
+export function PreventFlashOnWrongTheme({ssrTheme}: {ssrTheme: boolean}) {
   const [theme] = useTheme()
 
   return (
@@ -134,7 +137,7 @@ function PreventFlashOnWrongTheme({ssrTheme}: {ssrTheme: boolean}) {
   )
 }
 
-function useTheme() {
+export function useTheme() {
   const context = useContext(ThemeContext)
   if (context === undefined) {
     throw new Error('useTheme must be used within a ThemeProvider')
@@ -142,15 +145,6 @@ function useTheme() {
   return context
 }
 
-function isTheme(value: unknown): value is Theme {
+export function isTheme(value: unknown): value is Theme {
   return typeof value === 'string' && themes.includes(value as Theme)
-}
-
-export {
-  ThemeProvider,
-  useTheme,
-  themes,
-  Theme,
-  isTheme,
-  PreventFlashOnWrongTheme,
 }

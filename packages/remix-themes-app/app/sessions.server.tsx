@@ -10,7 +10,7 @@ export const themeSessionResolver = createThemeSessionResolver(
       httpOnly: true,
       sameSite: 'lax',
       secrets: ['s3cr3t'],
-      // secure: true,
+      secure: false, // enable it in prod
     },
   }),
 )

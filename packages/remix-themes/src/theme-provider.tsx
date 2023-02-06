@@ -1,5 +1,6 @@
 import type {Dispatch, ReactNode, SetStateAction} from 'react'
 import {createContext, useState, useContext, useEffect, useRef} from 'react'
+import {useBroadcastChannel} from './useBroadcastChannel'
 
 export enum Theme {
   DARK = 'dark',
@@ -16,7 +17,9 @@ ThemeContext.displayName = 'ThemeContext'
 const prefersLightMQ = '(prefers-color-scheme: light)'
 const getPreferredTheme = () =>
   window.matchMedia(prefersLightMQ).matches ? Theme.LIGHT : Theme.DARK
-export const mediaQuery = window.matchMedia(prefersLightMQ)
+
+export const mediaQuery =
+  typeof window !== 'undefined' ? window.matchMedia(prefersLightMQ) : null
 
 export type ThemeProviderProps = {
   children: ReactNode
@@ -47,6 +50,10 @@ export function ThemeProvider({
 
   const mountRun = useRef(false)
 
+  const broadcastThemeChange = useBroadcastChannel('remix-themes', e =>
+    setTheme(e.data),
+  )
+
   useEffect(() => {
     if (!mountRun.current) {
       mountRun.current = true
@@ -58,14 +65,16 @@ export function ThemeProvider({
       method: 'POST',
       body: JSON.stringify({theme}),
     })
-  }, [theme, themeAction])
+
+    broadcastThemeChange(theme)
+  }, [broadcastThemeChange, theme, themeAction])
 
   useEffect(() => {
     const handleChange = (ev: MediaQueryListEvent) => {
       setTheme(ev.matches ? Theme.LIGHT : Theme.DARK)
     }
-    mediaQuery.addEventListener('change', handleChange)
-    return () => mediaQuery.removeEventListener('change', handleChange)
+    mediaQuery?.addEventListener('change', handleChange)
+    return () => mediaQuery?.removeEventListener('change', handleChange)
   }, [])
 
   return (

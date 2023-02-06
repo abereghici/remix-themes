@@ -8,6 +8,7 @@
 - ✅ System setting with prefers-color-scheme
 - ✅ Automatically updates the theme when the user changes the system setting
 - ✅ No flash on load
+- ✅ Sync theme across tabs and windows
 
 Check out the
 [Example](https://github.com/abereghici/remix-themes/tree/main/packages/remix-themes-app)

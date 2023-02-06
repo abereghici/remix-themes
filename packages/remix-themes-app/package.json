@@ -14,7 +14,7 @@
     "@remix-run/serve": "latest",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "remix-themes": "1.1.6"
+    "remix-themes": "0.0.0-semantically-released"
   },
   "devDependencies": {
     "@remix-run/dev": "latest",

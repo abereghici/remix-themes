@@ -101,7 +101,7 @@ describe('theme-provider', () => {
     })
 
     act(() => {
-      mediaQuery.dispatchEvent(
+      mediaQuery?.dispatchEvent(
         new MediaQueryListEvent('change', {
           media: prefersLightMQ,
           matches: false,
@@ -114,7 +114,7 @@ describe('theme-provider', () => {
     })
 
     act(() => {
-      mediaQuery.dispatchEvent(
+      mediaQuery?.dispatchEvent(
         new MediaQueryListEvent('change', {
           media: prefersLightMQ,
           matches: true,

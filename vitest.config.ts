@@ -7,7 +7,7 @@ export default defineConfig({
     globals: true,
     environment: 'happy-dom',
     coverage: {
-      exclude: ['**/build'],
+      exclude: ['**/build', '**/*.test.ts', '**/*.test.tsx'],
       excludeNodeModules: true,
     },
     include: [

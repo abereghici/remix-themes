@@ -33,14 +33,17 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@remix-run/react": "latest",
-    "@remix-run/server-runtime": "latest",
+    "@remix-run/react": "1.12.0",
+    "@remix-run/server-runtime": "1.12.0",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/react-hooks": "^8.0.1",
     "@types/react": "^18.0.27",
     "react": "^18.2.0",
     "typescript": "^4.9.5"
   },
   "peerDependencies": {
-    "@remix-run/react": "^1.6.0",
-    "@remix-run/server-runtime": "^1.6.0"
+    "@remix-run/react": "^1.12.0",
+    "@remix-run/server-runtime": "^1.12.0"
   }
 }

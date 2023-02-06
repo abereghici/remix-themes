@@ -69,7 +69,9 @@ jobs:
           cache: 'yarn'
 
       - name: 📥 Install deps
-        run: yarn --frozen-lockfile
+        run: |
+          node -e "let pkg=require('./package.json');pkg.workspaces=['packages/remix-themes'];require('fs').writeFileSync('./package.json',JSON.stringify(pkg),'utf8')"
+          yarn --frozen-lockfile
 
       - name: 🏗 Run build script
         run: yarn build

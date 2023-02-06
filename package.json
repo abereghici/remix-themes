@@ -16,17 +16,14 @@
     "test": "vitest -w=false",
     "test:watch": "vitest -w",
     "test:e2e:dev": "playwright test",
-    "test:e2e:run": "cross-env CI=true playwright test",
     "pretest:e2e:run": "npm-run-all --parallel build app:build",
+    "test:e2e:run": "cross-env CI=true playwright test",
     "typecheck": "yarn workspace remix-themes typecheck",
     "validate": "npm-run-all --parallel typecheck lint test"
   },
   "devDependencies": {
     "@playwright/test": "^1.30.0",
     "@remix-run/eslint-config": "latest",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/react-hooks": "^8.0.1",
     "@vitest/coverage-c8": "^0.28.4",
     "cross-env": "^7.0.3",
     "eslint": "^8.33.0",

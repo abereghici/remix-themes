@@ -83,6 +83,7 @@ jobs:
 
       - name: 📥 Install deps
         run: |
+          cp README.md packages/remix-themes
           node -e "let pkg=require('./package.json');pkg.workspaces=['packages/remix-themes'];require('fs').writeFileSync('./package.json',JSON.stringify(pkg),'utf8')"
           yarn --frozen-lockfile
 

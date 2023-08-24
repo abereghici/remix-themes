@@ -107,7 +107,7 @@ function App() {
 
 #### Add the action route
 
-Create a file in `/routes/action/set-theme.ts` with the content below. Ensure
+Create a file in `/routes/action/set-theme.ts` or `/routes/action.set-theme.ts` when using [Route File Naming v2](https://remix.run/docs/en/1.19.3/file-conventions/route-files-v2#route-file-naming-v2) with the content below. Ensure
 that you pass the filename to the `ThemeProvider` component.
 
 > Note: You can name the action route whatever you want. Just make sure you pass

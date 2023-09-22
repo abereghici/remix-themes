@@ -43,7 +43,7 @@
     "typescript": "^4.9.5"
   },
   "peerDependencies": {
-    "@remix-run/react": "^1.12.0",
-    "@remix-run/server-runtime": "^1.12.0"
+    "@remix-run/react": ">= 1",
+    "@remix-run/server-runtime": ">= 1"
   }
 }

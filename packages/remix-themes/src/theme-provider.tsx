@@ -25,12 +25,14 @@ export type ThemeProviderProps = {
   children: ReactNode
   specifiedTheme: Theme | null
   themeAction: string
+  disableTransitionOnThemeChange?: boolean
 }
 
 export function ThemeProvider({
   children,
   specifiedTheme,
   themeAction,
+  disableTransitionOnThemeChange = false,
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme | null>(() => {
     // On the server, if we don't have a specified theme then we should
@@ -54,6 +56,32 @@ export function ThemeProvider({
     setTheme(e.data),
   )
 
+  const disableTransition = () => {
+    const style = document.createElement('style')
+
+    style.textContent = `
+      * {
+          -ms-transition: none!important;
+          -webkit-transition: none!important;
+          -moz-transition: none!important;
+          -o-transition: none!important;
+          transition: none!important
+      }
+    `
+
+    document.head.appendChild(style)
+
+    return () => {
+      // Force restyle
+      ;(() => window.getComputedStyle(document.body))()
+
+      // Wait for next tick before removing
+      setTimeout(() => {
+        document.head.removeChild(style)
+      }, 1)
+    }
+  }
+
   useEffect(() => {
     if (!mountRun.current) {
       mountRun.current = true
@@ -67,11 +95,13 @@ export function ThemeProvider({
     })
 
     broadcastThemeChange(theme)
+    disableTransitionOnThemeChange && disableTransition()
   }, [broadcastThemeChange, theme, themeAction])
 
   useEffect(() => {
     const handleChange = (ev: MediaQueryListEvent) => {
       setTheme(ev.matches ? Theme.LIGHT : Theme.DARK)
+      disableTransitionOnThemeChange && disableTransition()
     }
     mediaQuery?.addEventListener('change', handleChange)
     return () => mediaQuery?.removeEventListener('change', handleChange)

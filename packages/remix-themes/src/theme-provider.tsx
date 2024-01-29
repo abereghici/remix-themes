@@ -69,17 +69,13 @@ export function ThemeProvider({
       }
     `
 
-    document.head.appendChild(style)
+    document.head.appendChild(style);
 
-    return () => {
-      // Force restyle
-      ;(() => window.getComputedStyle(document.body))()
+    (() => window.getComputedStyle(document.body))();
 
-      // Wait for next tick before removing
-      setTimeout(() => {
-        document.head.removeChild(style)
-      }, 1)
-    }
+    setTimeout(() => {
+      document.head.removeChild(style);
+    }, 1);
   }
 
   useEffect(() => {

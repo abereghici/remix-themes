@@ -92,7 +92,7 @@ export function ThemeProvider({
 
     broadcastThemeChange(theme)
     disableTransitionOnThemeChange && disableTransition()
-  }, [broadcastThemeChange, theme, themeAction])
+  }, [broadcastThemeChange, disableTransitionOnThemeChange, theme, themeAction])
 
   useEffect(() => {
     const handleChange = (ev: MediaQueryListEvent) => {

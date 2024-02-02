@@ -1,19 +1,23 @@
 [data-theme='dark'] {
   background-color: #000;
   color: white;
+  transition: background-color 2s ease;
 }
 
 [data-theme='light'] {
   background-color: #f2f2f2;
   color: black;
+  transition: background-color 2s ease;
 }
 
 .dark {
   background-color: #000;
   color: white;
+  transition: background-color 2s ease;
 }
 
 .light {
   background-color: #f2f2f2;
   color: black;
+  transition: background-color 2s ease;
 }

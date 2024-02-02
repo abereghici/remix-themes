@@ -1,6 +1,7 @@
 import type {Dispatch, ReactNode, SetStateAction} from 'react'
 import {createContext, useState, useContext, useEffect, useRef} from 'react'
 import {useBroadcastChannel} from './useBroadcastChannel'
+import {useCorrectCssTransition} from './useCorrectCssTransition'
 
 export enum Theme {
   DARK = 'dark',
@@ -15,6 +16,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 ThemeContext.displayName = 'ThemeContext'
 
 const prefersLightMQ = '(prefers-color-scheme: light)'
+
 const getPreferredTheme = () =>
   window.matchMedia(prefersLightMQ).matches ? Theme.LIGHT : Theme.DARK
 
@@ -25,13 +27,19 @@ export type ThemeProviderProps = {
   children: ReactNode
   specifiedTheme: Theme | null
   themeAction: string
+  disableTransitionOnThemeChange?: boolean
 }
 
 export function ThemeProvider({
   children,
   specifiedTheme,
   themeAction,
+  disableTransitionOnThemeChange = false,
 }: ThemeProviderProps) {
+  const ensureCorrectTransition = useCorrectCssTransition({
+    disableTransitions: disableTransitionOnThemeChange,
+  })
+
   const [theme, setTheme] = useState<Theme | null>(() => {
     // On the server, if we don't have a specified theme then we should
     // return null and the clientThemeCode will set the theme for us
@@ -50,9 +58,11 @@ export function ThemeProvider({
 
   const mountRun = useRef(false)
 
-  const broadcastThemeChange = useBroadcastChannel('remix-themes', e =>
-    setTheme(e.data),
-  )
+  const broadcastThemeChange = useBroadcastChannel('remix-themes', e => {
+    ensureCorrectTransition(() => {
+      setTheme(e.data)
+    })
+  })
 
   useEffect(() => {
     if (!mountRun.current) {
@@ -66,16 +76,20 @@ export function ThemeProvider({
       body: JSON.stringify({theme}),
     })
 
-    broadcastThemeChange(theme)
-  }, [broadcastThemeChange, theme, themeAction])
+    ensureCorrectTransition(() => {
+      broadcastThemeChange(theme)
+    })
+  }, [broadcastThemeChange, theme, themeAction, ensureCorrectTransition])
 
   useEffect(() => {
     const handleChange = (ev: MediaQueryListEvent) => {
-      setTheme(ev.matches ? Theme.LIGHT : Theme.DARK)
+      ensureCorrectTransition(() => {
+        setTheme(ev.matches ? Theme.LIGHT : Theme.DARK)
+      })
     }
     mediaQuery?.addEventListener('change', handleChange)
     return () => mediaQuery?.removeEventListener('change', handleChange)
-  }, [])
+  }, [ensureCorrectTransition])
 
   return (
     <ThemeContext.Provider value={[theme, setTheme]}>

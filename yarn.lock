@@ -1514,7 +1514,7 @@
     source-map-support "^0.5.21"
     stream-slice "^0.1.2"
 
-"@remix-run/react@latest":
+"@remix-run/react@1.12.0", "@remix-run/react@latest":
   version "1.12.0"
   resolved "https://registry.yarnpkg.com/@remix-run/react/-/react-1.12.0.tgz#7ad27e7d152b0980ef09ac851f849cc445a9e51f"
   integrity sha512-BokbMOILGJvUvwOsTXAUrucvfFz/SBKVgSHke2+89DZIU7H2Z1UWe5t8wRTfjQnfnSH2tAXCF0QxmVpo1GQ3dg==
@@ -1538,7 +1538,7 @@
     express "^4.17.1"
     morgan "^1.10.0"
 
-"@remix-run/server-runtime@1.12.0", "@remix-run/server-runtime@latest":
+"@remix-run/server-runtime@1.12.0":
   version "1.12.0"
   resolved "https://registry.yarnpkg.com/@remix-run/server-runtime/-/server-runtime-1.12.0.tgz#a2072c2e88b948b2a657993574cad01d42cf8cd4"
   integrity sha512-7I0165Ns/ffPfCEfuiqD58lMderTn2s/sew1xJ34ONa21mG/7+5T7diHIgxKST8rS3816JPmlwSqUaHgwbmO6Q==

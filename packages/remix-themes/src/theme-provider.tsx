@@ -1,6 +1,7 @@
 import type {Dispatch, ReactNode, SetStateAction} from 'react'
 import {createContext, useState, useContext, useEffect, useRef} from 'react'
 import {useBroadcastChannel} from './useBroadcastChannel'
+import {useCorrectCssTransition} from './useCorrectCssTransition'
 
 export enum Theme {
   DARK = 'dark',
@@ -15,6 +16,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 ThemeContext.displayName = 'ThemeContext'
 
 const prefersLightMQ = '(prefers-color-scheme: light)'
+
 const getPreferredTheme = () =>
   window.matchMedia(prefersLightMQ).matches ? Theme.LIGHT : Theme.DARK
 
@@ -34,6 +36,10 @@ export function ThemeProvider({
   themeAction,
   disableTransitionOnThemeChange = false,
 }: ThemeProviderProps) {
+  const ensureCorrectTransition = useCorrectCssTransition({
+    disableTransitions: disableTransitionOnThemeChange,
+  })
+
   const [theme, setTheme] = useState<Theme | null>(() => {
     // On the server, if we don't have a specified theme then we should
     // return null and the clientThemeCode will set the theme for us
@@ -52,31 +58,11 @@ export function ThemeProvider({
 
   const mountRun = useRef(false)
 
-  const broadcastThemeChange = useBroadcastChannel('remix-themes', e =>
-    setTheme(e.data),
-  )
-
-  const disableTransition = () => {
-    const style = document.createElement('style')
-
-    style.textContent = `
-      * {
-          -ms-transition: none!important;
-          -webkit-transition: none!important;
-          -moz-transition: none!important;
-          -o-transition: none!important;
-          transition: none!important
-      }
-    `
-
-    document.head.appendChild(style);
-
-    (() => window.getComputedStyle(document.body))();
-
-    setTimeout(() => {
-      document.head.removeChild(style);
-    }, 1);
-  }
+  const broadcastThemeChange = useBroadcastChannel('remix-themes', e => {
+    ensureCorrectTransition(() => {
+      setTheme(e.data)
+    })
+  })
 
   useEffect(() => {
     if (!mountRun.current) {
@@ -90,18 +76,20 @@ export function ThemeProvider({
       body: JSON.stringify({theme}),
     })
 
-    broadcastThemeChange(theme)
-    disableTransitionOnThemeChange && disableTransition()
-  }, [broadcastThemeChange, disableTransitionOnThemeChange, theme, themeAction])
+    ensureCorrectTransition(() => {
+      broadcastThemeChange(theme)
+    })
+  }, [broadcastThemeChange, theme, themeAction, ensureCorrectTransition])
 
   useEffect(() => {
     const handleChange = (ev: MediaQueryListEvent) => {
-      setTheme(ev.matches ? Theme.LIGHT : Theme.DARK)
-      disableTransitionOnThemeChange && disableTransition()
+      ensureCorrectTransition(() => {
+        setTheme(ev.matches ? Theme.LIGHT : Theme.DARK)
+      })
     }
     mediaQuery?.addEventListener('change', handleChange)
     return () => mediaQuery?.removeEventListener('change', handleChange)
-  }, [])
+  }, [ensureCorrectTransition])
 
   return (
     <ThemeContext.Provider value={[theme, setTheme]}>

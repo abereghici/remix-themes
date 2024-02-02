@@ -133,6 +133,8 @@ Let's dig into the details.
 - `specifiedTheme`: The theme from the session storage.
 - `themeAction`: The action name used to change the theme in the session
   storage.
+- `disableTransitionOnThemeChange`: Disable CSS transitions on theme change to
+  prevent the flashing effect.
 
 ### useTheme
 

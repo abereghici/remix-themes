@@ -130,7 +130,15 @@ const clientThemeCode = `
 })();
 `
 
-export function PreventFlashOnWrongTheme({ssrTheme}: {ssrTheme: boolean}) {
+type PreventFlashOnWrongThemeProps = {
+  ssrTheme: boolean
+  nonce?: string
+}
+
+export function PreventFlashOnWrongTheme({
+  ssrTheme,
+  nonce,
+}: PreventFlashOnWrongThemeProps) {
   const [theme] = useTheme()
 
   return (
@@ -154,6 +162,7 @@ export function PreventFlashOnWrongTheme({ssrTheme}: {ssrTheme: boolean}) {
           // this script to run synchronously before the rest of the document
           // is finished loading.
           dangerouslySetInnerHTML={{__html: clientThemeCode}}
+          nonce={nonce}
         />
       )}
     </>

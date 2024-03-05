@@ -2,7 +2,7 @@ import React from 'react'
 import {vi} from 'vitest'
 import {waitFor, render} from '@testing-library/react'
 import {act, renderHook} from '@testing-library/react-hooks'
-import type {ThemeProviderProps} from './theme-provider'
+import {SelectionMode, ThemeProviderProps} from './theme-provider'
 import {
   ThemeProvider,
   useTheme,
@@ -91,7 +91,7 @@ describe('theme-provider', () => {
     expect(result.current[0]).toBe(preferredTheme)
   })
 
-  it('updates automatically when the system theme  changes', async () => {
+  it('updates automatically when the system theme changes', async () => {
     const prefersLightMQ = '(prefers-color-scheme: light)'
 
     const {result} = renderHook(() => useTheme(), {
@@ -111,6 +111,47 @@ describe('theme-provider', () => {
 
     await waitFor(() => {
       expect(result.current[0]).toBe(Theme.DARK)
+    })
+
+    act(() => {
+      mediaQuery?.dispatchEvent(
+        new MediaQueryListEvent('change', {
+          media: prefersLightMQ,
+          matches: true,
+        }),
+      )
+    })
+
+    await waitFor(() => {
+      expect(result.current[0]).toBe(Theme.LIGHT)
+    })
+  })
+
+  it('ignores system theme when selection mode is "user"', async () => {
+    const prefersLightMQ = '(prefers-color-scheme: light)'
+
+    const {result} = renderHook(() => useTheme(), {
+      wrapper: (props: ThemeProviderProps) => (
+        <ThemeProvider
+          {...props}
+          themeAction={themeAction}
+          specifiedTheme={Theme.LIGHT}
+          selectionMode={SelectionMode.USER}
+        />
+      ),
+    })
+
+    act(() => {
+      mediaQuery?.dispatchEvent(
+        new MediaQueryListEvent('change', {
+          media: prefersLightMQ,
+          matches: false,
+        }),
+      )
+    })
+
+    await waitFor(() => {
+      expect(result.current[0]).toBe(Theme.LIGHT)
     })
 
     act(() => {

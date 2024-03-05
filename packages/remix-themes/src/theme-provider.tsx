@@ -17,6 +17,11 @@ ThemeContext.displayName = 'ThemeContext'
 
 const prefersLightMQ = '(prefers-color-scheme: light)'
 
+export enum SelectionMode {
+  USER = 'user',
+  SYSTEM = 'system',
+}
+
 const getPreferredTheme = () =>
   window.matchMedia(prefersLightMQ).matches ? Theme.LIGHT : Theme.DARK
 
@@ -28,6 +33,7 @@ export type ThemeProviderProps = {
   specifiedTheme: Theme | null
   themeAction: string
   disableTransitionOnThemeChange?: boolean
+  selectionMode?: SelectionMode
 }
 
 export function ThemeProvider({
@@ -35,6 +41,7 @@ export function ThemeProvider({
   specifiedTheme,
   themeAction,
   disableTransitionOnThemeChange = false,
+  selectionMode = SelectionMode.SYSTEM,
 }: ThemeProviderProps) {
   const ensureCorrectTransition = useCorrectCssTransition({
     disableTransitions: disableTransitionOnThemeChange,
@@ -82,6 +89,10 @@ export function ThemeProvider({
   }, [broadcastThemeChange, theme, themeAction, ensureCorrectTransition])
 
   useEffect(() => {
+    if (selectionMode !== SelectionMode.SYSTEM) {
+      return
+    }
+
     const handleChange = (ev: MediaQueryListEvent) => {
       ensureCorrectTransition(() => {
         setTheme(ev.matches ? Theme.LIGHT : Theme.DARK)
@@ -89,7 +100,7 @@ export function ThemeProvider({
     }
     mediaQuery?.addEventListener('change', handleChange)
     return () => mediaQuery?.removeEventListener('change', handleChange)
-  }, [ensureCorrectTransition])
+  }, [ensureCorrectTransition, selectionMode])
 
   return (
     <ThemeContext.Provider value={[theme, setTheme]}>

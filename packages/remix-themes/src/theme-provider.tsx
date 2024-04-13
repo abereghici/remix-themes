@@ -28,6 +28,7 @@ export type ThemeProviderProps = {
   specifiedTheme: Theme | null
   themeAction: string
   disableTransitionOnThemeChange?: boolean
+  disableTransitionExclude?: string[]
 }
 
 export function ThemeProvider({
@@ -35,9 +36,11 @@ export function ThemeProvider({
   specifiedTheme,
   themeAction,
   disableTransitionOnThemeChange = false,
+  disableTransitionExclude = [],
 }: ThemeProviderProps) {
   const ensureCorrectTransition = useCorrectCssTransition({
     disableTransitions: disableTransitionOnThemeChange,
+    disableTransitionExclude: disableTransitionExclude,
   })
 
   const [theme, setTheme] = useState<Theme | null>(() => {
@@ -103,7 +106,7 @@ const clientThemeCode = `
   const theme = window.matchMedia(${JSON.stringify(prefersLightMQ)}).matches
     ? 'light'
     : 'dark';
-  
+
   const cl = document.documentElement.classList;
   const dataAttr = document.documentElement.dataset.theme;
 
@@ -118,7 +121,7 @@ const clientThemeCode = `
       cl.add(theme);
     }
   }
-  
+
   const meta = document.querySelector('meta[name=color-scheme]');
   if (meta) {
     if (theme === 'dark') {

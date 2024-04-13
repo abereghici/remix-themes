@@ -61,6 +61,7 @@ export default function AppWithProviders() {
       specifiedTheme={data.theme}
       themeAction="/action/set-theme"
       disableTransitionOnThemeChange={true}
+      disableTransitionExclude={['.moon-icon', '.sun-icon']}
     >
       <App />
     </ThemeProvider>

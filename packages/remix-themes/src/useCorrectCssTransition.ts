@@ -1,16 +1,19 @@
 import {useCallback} from 'react'
 
-function withoutTransition(callback: Function) {
+function withoutTransition(
+  callback: Function,
+  disableTransitionExclude: string[] = [],
+) {
   const css = document.createElement('style')
   css.appendChild(
     document.createTextNode(
-      `* {
-       -webkit-transition: none !important;
-       -moz-transition: none !important;
-       -o-transition: none !important;
-       -ms-transition: none !important;
-       transition: none !important;
-    }`,
+      `*${disableTransitionExclude.map(s => `:not(${s})`).join('')} {
+        -webkit-transition: none !important;
+        -moz-transition: none !important;
+        -o-transition: none !important;
+        -ms-transition: none !important;
+        transition: none !important;
+      }`,
     ),
   )
   document.head.appendChild(css)
@@ -27,17 +30,18 @@ function withoutTransition(callback: Function) {
 
 export function useCorrectCssTransition({
   disableTransitions = false,
-}: {disableTransitions?: boolean} = {}) {
+  disableTransitionExclude = [],
+}: {disableTransitions?: boolean; disableTransitionExclude?: string[]} = {}) {
   return useCallback(
     (callback: Function) => {
       if (disableTransitions) {
         withoutTransition(() => {
           callback()
-        })
+        }, disableTransitionExclude)
       } else {
         callback()
       }
     },
-    [disableTransitions],
+    [disableTransitions, disableTransitionExclude],
   )
 }

@@ -21,3 +21,42 @@
   color: black;
   transition: background-color 2s ease;
 }
+
+.icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+}
+
+.icon {
+  width: 1.2rem;
+  height: 1.2rem;
+  transition: transform 500ms;
+}
+
+.sun-icon {
+  transform: rotate(0deg) scale(1);
+}
+
+.dark .sun-icon {
+  transform: rotate(0deg) scale(1);
+}
+
+.moon-icon {
+  position: absolute;
+  transform: rotate(90deg) scale(0);
+}
+
+.dark .moon-icon {
+  transform: rotate(0deg) scale(1);
+}
+
+[data-theme='dark'] .sun-icon {
+  transform: rotate(-90deg) scale(0);
+}
+
+[data-theme='dark'] .moon-icon {
+  transform: rotate(0deg) scale(1);
+}

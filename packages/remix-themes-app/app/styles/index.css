@@ -1,3 +1,13 @@
+.dark,
+[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+.light,
+[data-theme='light'] {
+  color-scheme: light;
+}
+
 [data-theme='dark'] {
   background-color: #000;
   color: white;

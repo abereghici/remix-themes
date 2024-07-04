@@ -6,6 +6,7 @@ type ThemeSession = {
   getTheme: () => Theme | null
   setTheme: (theme: Theme) => void
   commit: () => Promise<string>
+  destroy: () => Promise<string>
 }
 
 export type ThemeSessionResolver = (request: Request) => Promise<ThemeSession>
@@ -25,6 +26,7 @@ export const createThemeSessionResolver = (
       },
       setTheme: (theme: Theme) => session.set('theme', theme),
       commit: () => cookieThemeSession.commitSession(session),
+      destroy: () => cookieThemeSession.destroySession(session),
     }
   }
 

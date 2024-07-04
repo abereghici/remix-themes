@@ -1,5 +1,12 @@
 import type {Dispatch, ReactNode, SetStateAction} from 'react'
-import {createContext, useState, useContext, useEffect, useRef} from 'react'
+import {
+  createContext,
+  useState,
+  useContext,
+  useEffect,
+  useCallback,
+  useMemo,
+} from 'react'
 import {useBroadcastChannel} from './useBroadcastChannel'
 import {useCorrectCssTransition} from './useCorrectCssTransition'
 
@@ -10,7 +17,15 @@ export enum Theme {
 
 export const themes: Array<Theme> = Object.values(Theme)
 
-type ThemeContextType = [Theme | null, Dispatch<SetStateAction<Theme | null>>]
+export type ThemeMetadata = {
+  definedBy: 'USER' | 'SYSTEM'
+}
+
+type ThemeContextType = [
+  Theme | null,
+  Dispatch<SetStateAction<Theme | null>>,
+  ThemeMetadata,
+]
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 ThemeContext.displayName = 'ThemeContext'
@@ -56,32 +71,25 @@ export function ThemeProvider({
     return getPreferredTheme()
   })
 
-  const mountRun = useRef(false)
+  const [themeDefinedBy, setThemeDefinedBy] = useState<
+    ThemeMetadata['definedBy']
+  >(specifiedTheme ? 'USER' : 'SYSTEM')
 
-  const broadcastThemeChange = useBroadcastChannel('remix-themes', e => {
+  const broadcastThemeChange = useBroadcastChannel<{
+    theme: Theme
+    definedBy: ThemeMetadata['definedBy']
+  }>('remix-themes', e => {
     ensureCorrectTransition(() => {
-      setTheme(e.data)
+      setTheme(e.data.theme)
+      setThemeDefinedBy(e.data.definedBy)
     })
   })
 
   useEffect(() => {
-    if (!mountRun.current) {
-      mountRun.current = true
-      return
+    if (themeDefinedBy === 'USER') {
+      return () => {}
     }
-    if (!theme) return
 
-    fetch(`${themeAction}`, {
-      method: 'POST',
-      body: JSON.stringify({theme}),
-    })
-
-    ensureCorrectTransition(() => {
-      broadcastThemeChange(theme)
-    })
-  }, [broadcastThemeChange, theme, themeAction, ensureCorrectTransition])
-
-  useEffect(() => {
     const handleChange = (ev: MediaQueryListEvent) => {
       ensureCorrectTransition(() => {
         setTheme(ev.matches ? Theme.LIGHT : Theme.DARK)
@@ -89,13 +97,47 @@ export function ThemeProvider({
     }
     mediaQuery?.addEventListener('change', handleChange)
     return () => mediaQuery?.removeEventListener('change', handleChange)
-  }, [ensureCorrectTransition])
+  }, [ensureCorrectTransition, themeDefinedBy])
 
-  return (
-    <ThemeContext.Provider value={[theme, setTheme]}>
-      {children}
-    </ThemeContext.Provider>
+  const handleThemeChange = useCallback<Dispatch<SetStateAction<Theme | null>>>(
+    value => {
+      const nextTheme = typeof value === 'function' ? value(theme) : value
+
+      if (nextTheme === null) {
+        const preferredTheme = getPreferredTheme()
+
+        ensureCorrectTransition(() => {
+          setTheme(preferredTheme)
+          setThemeDefinedBy('SYSTEM')
+          broadcastThemeChange({theme: preferredTheme, definedBy: 'SYSTEM'})
+        })
+
+        fetch(`${themeAction}`, {
+          method: 'POST',
+          body: JSON.stringify({theme: null}),
+        })
+      } else {
+        ensureCorrectTransition(() => {
+          setTheme(nextTheme)
+          setThemeDefinedBy('USER')
+          broadcastThemeChange({theme: nextTheme, definedBy: 'USER'})
+        })
+
+        fetch(`${themeAction}`, {
+          method: 'POST',
+          body: JSON.stringify({theme: nextTheme}),
+        })
+      }
+    },
+    [broadcastThemeChange, ensureCorrectTransition, theme, themeAction],
   )
+
+  const value = useMemo<ThemeContextType>(
+    () => [theme, handleThemeChange, {definedBy: themeDefinedBy}],
+    [theme, handleThemeChange, themeDefinedBy],
+  )
+
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
 }
 
 const clientThemeCode = `

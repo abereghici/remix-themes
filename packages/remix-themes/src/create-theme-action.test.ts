@@ -48,13 +48,12 @@ describe('create-theme action', () => {
     })
   })
 
-  it("doesn't accept empty themes", async () => {
+  it('accepts empty themes', async () => {
     let theme = ''
     let request = createThemedRequest(theme)
     let response = await action({request, params: {}, context: {}})
     await expect(response.json()).resolves.toEqual({
-      success: false,
-      message: `empty theme provided`,
+      success: true,
     })
   })
 })

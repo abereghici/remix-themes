@@ -43,6 +43,7 @@ describe('theme-provider', () => {
     })
 
     expect(result.current[0]).toBe(Theme.DARK)
+    expect(result.current[2].definedBy).toBe('USER')
   })
 
   it('changes the theme', async () => {
@@ -56,6 +57,7 @@ describe('theme-provider', () => {
       ),
     })
     expect(result.current[0]).toBe(Theme.DARK)
+    expect(result.current[2].definedBy).toBe('USER')
 
     act(() => {
       result.current[1](Theme.LIGHT)
@@ -71,6 +73,7 @@ describe('theme-provider', () => {
 
     expect(global.fetch).toHaveBeenLastCalledWith(...request)
     expect(result.current[0]).toBe(Theme.LIGHT)
+    expect(result.current[2].definedBy).toBe('USER')
   })
 
   it('uses the current system theme if no specified theme was provided', async () => {
@@ -89,9 +92,10 @@ describe('theme-provider', () => {
     })
 
     expect(result.current[0]).toBe(preferredTheme)
+    expect(result.current[2].definedBy).toBe('SYSTEM')
   })
 
-  it('updates automatically when the system theme  changes', async () => {
+  it('updates automatically when the system theme changes', async () => {
     const prefersLightMQ = '(prefers-color-scheme: light)'
 
     const {result} = renderHook(() => useTheme(), {
@@ -111,6 +115,49 @@ describe('theme-provider', () => {
 
     await waitFor(() => {
       expect(result.current[0]).toBe(Theme.DARK)
+      expect(result.current[2].definedBy).toBe('SYSTEM')
+    })
+
+    act(() => {
+      mediaQuery?.dispatchEvent(
+        new MediaQueryListEvent('change', {
+          media: prefersLightMQ,
+          matches: true,
+        }),
+      )
+    })
+
+    await waitFor(() => {
+      expect(result.current[0]).toBe(Theme.LIGHT)
+      expect(result.current[2].definedBy).toBe('SYSTEM')
+    })
+  })
+
+  it('ignores the system theme if the user already chose one', async () => {
+    const prefersLightMQ = '(prefers-color-scheme: light)'
+
+    const {result} = renderHook(() => useTheme(), {
+      wrapper: (props: ThemeProviderProps) => (
+        <ThemeProvider
+          {...props}
+          themeAction={themeAction}
+          specifiedTheme={Theme.LIGHT}
+        />
+      ),
+    })
+
+    act(() => {
+      mediaQuery?.dispatchEvent(
+        new MediaQueryListEvent('change', {
+          media: prefersLightMQ,
+          matches: false,
+        }),
+      )
+    })
+
+    await waitFor(() => {
+      expect(result.current[0]).toBe(Theme.LIGHT)
+      expect(result.current[2].definedBy).toBe('USER')
     })
 
     act(() => {

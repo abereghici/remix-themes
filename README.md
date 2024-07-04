@@ -6,8 +6,9 @@
 
 - ✅ Perfect dark mode in a few lines of code
 - ✅ System setting with prefers-color-scheme
-- ✅ Automatically updates the theme when the user changes the system setting
 - ✅ No flash on load
+- ✅ Disable flashing when changing themes
+- ✅ Class or data attribute selector
 - ✅ Sync theme across tabs and windows
 
 Check out the
@@ -107,8 +108,11 @@ function App() {
 
 #### Add the action route
 
-Create a file in `/routes/action/set-theme.ts` or `/routes/action.set-theme.ts` when using [Route File Naming v2](https://remix.run/docs/en/1.19.3/file-conventions/route-files-v2#route-file-naming-v2) with the content below. Ensure
-that you pass the filename to the `ThemeProvider` component.
+Create a file in `/routes/action/set-theme.ts` or `/routes/action.set-theme.ts`
+when using
+[Route File Naming v2](https://remix.run/docs/en/1.19.3/file-conventions/route-files-v2#route-file-naming-v2)
+with the content below. Ensure that you pass the filename to the `ThemeProvider`
+component.
 
 > Note: You can name the action route whatever you want. Just make sure you pass
 > the correct action name to the `ThemeProvider` component. Make sure to use
@@ -141,6 +145,12 @@ Let's dig into the details.
 useTheme takes no parameters but returns:
 
 - `theme`: Active theme name
+- `setTheme`: Function to set the theme. If the theme is set to `null`, the
+  system theme will be used and `definedBy` property in the `metadata` object
+  will be set to `SYSTEM`.
+- `metadata`: An object which contains the following properties:
+  - `definedBy`: The theme source. It can be `USER` or `SYSTEM`. Useful to
+    detect if the theme was set by the user or by the system.
 
 ### createThemeSessionResolver
 

@@ -10,14 +10,17 @@ export const createThemeAction = (
     const session = await themeSessionResolver(request)
     const {theme} = await request.json()
 
-    if (!isTheme(theme)) {
-      let message = theme
-        ? `theme value of ${theme} is not a valid theme.`
-        : `empty theme provided`
+    if (!theme) {
+      return json(
+        {success: true},
+        {headers: {'Set-Cookie': await session.destroy()}},
+      )
+    }
 
+    if (!isTheme(theme)) {
       return json({
         success: false,
-        message,
+        message: `theme value of ${theme} is not a valid theme.`,
       })
     }
 

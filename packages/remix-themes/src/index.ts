@@ -1,4 +1,4 @@
-export {createThemeSessionResolver} from './theme-server'
+export {createThemeSessionResolver, ThemeSessionResolver} from './theme-server'
 export {
   ThemeProvider,
   useTheme,
@@ -8,3 +8,5 @@ export {
   PreventFlashOnWrongTheme,
 } from './theme-provider'
 export {createThemeAction} from './create-theme-action'
+
+export type {ThemeMetadata} from './theme-provider'

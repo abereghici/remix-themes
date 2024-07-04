@@ -4,18 +4,20 @@ test('toggling the theme', async ({page}) => {
   await page.goto('/')
 
   const html = () => page.locator('html')
-  const toggler = () => page.getByRole('button', {name: 'Toggle theme'})
 
   const themeAttribute = 'data-theme'
   const initialTheme = await html().getAttribute(themeAttribute)
   const oppositeTheme = initialTheme === 'light' ? 'dark' : 'light'
 
-  await toggler().click()
+  await page.locator('select').selectOption({
+    value: oppositeTheme,
+  })
+
   expect(html()).toHaveAttribute(themeAttribute, oppositeTheme)
 
   await page.reload()
 
-  await expect(toggler()).toBeVisible()
+  await expect(page.locator('select')).toBeVisible()
 
   await expect(html()).toHaveAttribute(themeAttribute, oppositeTheme)
 })
@@ -28,14 +30,13 @@ test('sync between tabs when theme change', async ({context}) => {
   await pageTwo.goto('/')
 
   const html = (page: Page) => page.locator('html')
-  const toggler = (page: Page) =>
-    page.getByRole('button', {name: 'Toggle theme'})
 
   const themeAttribute = 'data-theme'
   const initialTheme = await html(pageOne).getAttribute(themeAttribute)
   const oppositeTheme = initialTheme === 'light' ? 'dark' : 'light'
 
-  await toggler(pageOne).click()
+  await pageOne.locator('select').selectOption({value: oppositeTheme})
+
   await expect(html(pageOne)).toHaveAttribute(themeAttribute, oppositeTheme)
   await expect(html(pageTwo)).toHaveAttribute(themeAttribute, oppositeTheme)
 })

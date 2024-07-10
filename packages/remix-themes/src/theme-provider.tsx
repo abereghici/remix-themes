@@ -140,7 +140,7 @@ export function ThemeProvider({
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
 }
 
-const clientThemeCode = `
+const clientThemeCode = String.raw`
 (() => {
   const theme = window.matchMedia(${JSON.stringify(prefersLightMQ)}).matches
     ? 'light'
@@ -205,6 +205,7 @@ export function PreventFlashOnWrongTheme({
           // is finished loading.
           dangerouslySetInnerHTML={{__html: clientThemeCode}}
           nonce={nonce}
+          suppressHydrationWarning
         />
       )}
     </>

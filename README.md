@@ -118,7 +118,7 @@ component.
 > the correct action name to the `ThemeProvider` component. Make sure to use
 > absolute path when using nested routing.
 
-This route it's used to store the preferred theme in the session storage when
+This route is used to store the preferred theme in the session storage when
 the user changes it.
 
 ```ts

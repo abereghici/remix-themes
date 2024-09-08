@@ -31,6 +31,7 @@ $ yarn add remix-themes
 // sessions.server.tsx
 
 import {createThemeSessionResolver} from 'remix-themes'
+import { createCookieSessionStorage } from "@remix-run/node"
 
 const sessionStorage = createCookieSessionStorage({
   cookie: {

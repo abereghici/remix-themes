@@ -107,3 +107,6 @@ dist
 build
 /test-results
 /playwright-report
+.idea/
+.yarn/
+.yarnrc.yml

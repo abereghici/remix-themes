@@ -1,4 +1,4 @@
-import type {SessionStorage} from '@remix-run/server-runtime'
+import { SessionStorage } from 'react-router';
 import type {Theme} from './theme-provider'
 import {isTheme} from './theme-provider'
 

@@ -1,56 +1,100 @@
-# Welcome to Remix!
+# Welcome to React Router!
 
-- [Remix Docs](https://remix.run/docs)
+A modern, production-ready template for building full-stack React applications using React Router.
 
-## Development
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
 
-From your terminal:
+## Features
 
-```sh
+- 🚀 Server-side rendering
+- ⚡️ Hot Module Replacement (HMR)
+- 📦 Asset bundling and optimization
+- 🔄 Data loading and mutations
+- 🔒 TypeScript by default
+- 🎉 TailwindCSS for styling
+- 📖 [React Router docs](https://reactrouter.com/)
+
+## Getting Started
+
+### Installation
+
+Install the dependencies:
+
+```bash
+npm install
+```
+
+### Development
+
+Start the development server with HMR:
+
+```bash
 npm run dev
 ```
 
-This starts your app in development mode, rebuilding assets on file changes.
+Your application will be available at `http://localhost:5173`.
 
-## Deployment
+## Building for Production
 
-First, build your app for production:
+Create a production build:
 
-```sh
+```bash
 npm run build
 ```
 
-Then run the app in production mode:
+## Deployment
 
-```sh
-npm start
+### Docker Deployment
+
+This template includes three Dockerfiles optimized for different package managers:
+
+- `Dockerfile` - for npm
+- `Dockerfile.pnpm` - for pnpm
+- `Dockerfile.bun` - for bun
+
+To build and run using Docker:
+
+```bash
+# For npm
+docker build -t my-app .
+
+# For pnpm
+docker build -f Dockerfile.pnpm -t my-app .
+
+# For bun
+docker build -f Dockerfile.bun -t my-app .
+
+# Run the container
+docker run -p 3000:3000 my-app
 ```
 
-Now you'll need to pick a host to deploy it to.
+The containerized application can be deployed to any platform that supports Docker, including:
 
-### DIY
+- AWS ECS
+- Google Cloud Run
+- Azure Container Apps
+- Digital Ocean App Platform
+- Fly.io
+- Railway
 
-If you're familiar with deploying node applications, the built-in Remix app
-server is production-ready.
+### DIY Deployment
 
-Make sure to deploy the output of `remix build`
+If you're familiar with deploying Node applications, the built-in app server is production-ready.
 
-- `build/`
-- `public/build/`
+Make sure to deploy the output of `npm run build`
 
-### Using a Template
-
-When you ran `npx create-remix@latest` there were a few choices for hosting. You
-can run that again to create a new project, then copy over your `app/` folder to
-the new project that's pre-configured for your target server.
-
-```sh
-cd ..
-# create a new project, and pick a pre-configured host
-npx create-remix@latest
-cd my-new-remix-app
-# remove the new project's app (not the old one!)
-rm -rf app
-# copy your app over
-cp -R ../my-old-remix-app/app app
 ```
+├── package.json
+├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
+├── build/
+│   ├── client/    # Static assets
+│   └── server/    # Server-side code
+```
+
+## Styling
+
+This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+
+---
+
+Built with ❤️ using React Router.

@@ -38,5 +38,5 @@ test('sync between tabs when theme change', async ({context}) => {
   await pageOne.locator('select').selectOption({value: oppositeTheme})
 
   await expect(html(pageOne)).toHaveAttribute(themeAttribute, oppositeTheme)
-  await expect(html(pageTwo)).toHaveAttribute(themeAttribute, oppositeTheme)
+  await expect(html(pageTwo)).toHaveAttribute(themeAttribute, oppositeTheme, { timeout: 100 })
 })

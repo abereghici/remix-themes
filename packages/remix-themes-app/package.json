@@ -1,29 +1,33 @@
 {
   "name": "remix-themes-app",
-  "version": "0.0.1",
   "private": true,
-  "sideEffects": false,
+  "type": "module",
   "scripts": {
-    "build": "remix build",
-    "dev": "remix dev",
-    "start": "remix-serve build"
+    "build": "cross-env NODE_ENV=production react-router build",
+    "dev": "react-router dev",
+    "start": "cross-env NODE_ENV=production react-router-serve ./build/server/index.js",
+    "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
-    "@remix-run/node": "latest",
-    "@remix-run/react": "latest",
-    "@remix-run/serve": "latest",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "remix-themes": "0.0.0-semantically-released"
+    "@react-router/node": "^7.1.1",
+    "@react-router/serve": "^7.1.1",
+    "isbot": "^5.1.17",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router": "^7.1.1",
+    "remix-themes": "/home/martin/Documents/perso/remix-themes/packages/remix-themes/package.tgz"
   },
   "devDependencies": {
-    "@remix-run/dev": "latest",
-    "@remix-run/eslint-config": "latest",
-    "@types/react": "^18.0.27",
-    "@types/react-dom": "^18.0.10",
-    "typescript": "^4.9.5"
-  },
-  "engines": {
-    "node": ">=14"
+    "@react-router/dev": "^7.1.1",
+    "@types/node": "^20",
+    "@types/react": "^19.0.1",
+    "@types/react-dom": "^19.0.1",
+    "autoprefixer": "^10.4.20",
+    "cross-env": "^7.0.3",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.16",
+    "typescript": "^5.7.2",
+    "vite": "^5.4.11",
+    "vite-tsconfig-paths": "^5.1.4"
   }
 }

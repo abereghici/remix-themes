@@ -1,39 +1,82 @@
 {
-  "name": "remix-themes-monorepo",
-  "private": true,
+  "name": "remix-themes",
+  "version": "0.0.0-semantically-released",
+  "description": "An abstraction for themes in your Remix_run app.",
+  "keywords": [
+    "remix",
+    "remix.run",
+    "react",
+    "themes",
+    "dark mode",
+    "light mode"
+  ],
+  "homepage": "https://github.com/abereghici/remix-themes#readme",
+  "bugs": {
+    "url": "https://github.com/abereghici/remix-themes/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abereghici/remix-themes.git"
+  },
+  "license": "MIT",
+  "author": "Alexandru Bereghici",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "workspaces": [
-    "packages/remix-themes",
-    "packages/remix-themes-app"
+    "test-apps/*",
+    "."
   ],
   "scripts": {
-    "build": "yarn workspace remix-themes build",
-    "format": "prettier --ignore-path .eslintignore --write ./ && npm run lint:fix",
-    "lint": "eslint --cache .",
-    "lint:fix": "yarn lint --fix",
-    "app:dev": "yarn build && yarn workspace remix-themes-app dev",
-    "app:build": "yarn build && yarn workspace remix-themes-app build",
-    "app:start": "yarn app:build && yarn workspace remix-themes-app start",
-    "test": "vitest -w=false",
-    "test:watch": "vitest -w",
+    "build": "tsup src/index.ts --format cjs,esm --dts --clean",
+    "format": "biome format . --write && prettier -w \"**/*\" \"!**/*.{md,mdx}\" --ignore-unknown --cache",
+    "lint": "biome lint .",
+    "test": "vitest run",
+    "app:dev": "npm run dev -w test-apps/react-router-app",
+    "app:build": "npm run build -w test-apps/react-router-app",
+    "app:start": "npm run app:build && npm run start -w test-apps/react-router-app start",
     "test:e2e:dev": "playwright test",
     "pretest:e2e:run": "npm-run-all --parallel build app:build",
     "test:e2e:run": "cross-env CI=true playwright test",
-    "typecheck": "yarn workspace remix-themes typecheck",
+    "typecheck": "tsc",
     "validate": "npm-run-all --parallel typecheck lint test"
   },
   "devDependencies": {
-    "@playwright/test": "^1.49.1",
-    "@remix-run/eslint-config": "latest",
-    "@vitest/coverage-c8": "^0.28.4",
-    "cross-env": "^7.0.3",
-    "eslint": "^8.33.0",
-    "eslint-plugin-testing-library": "^5.10.0",
-    "happy-dom": "^8.2.6",
-    "npm-run-all": "^4.1.5",
-    "prettier": "^2.8.3",
-    "vitest": "^0.28.4"
+    "@biomejs/biome": "1.9.4",
+    "@playwright/test": "1.49.1",
+    "@testing-library/dom": "10.4.0",
+    "@testing-library/react": "16.1.0",
+    "@types/node": "22.10.5",
+    "@types/react": "19.0.4",
+    "@types/react-dom": "19.0.2",
+    "@vitest/coverage-v8": "2.1.8",
+    "cross-env": "7.0.3",
+    "happy-dom": "16.5.3",
+    "npm-run-all": "4.1.5",
+    "prettier": "3.4.2",
+    "react-router": "7.1.1",
+    "tsup": "8.3.5",
+    "typescript": "5.7.3",
+    "vitest": "2.1.8"
   },
-  "engines": {
-    "node": ">=14"
+  "peerDependencies": {
+    "react": ">=19",
+    "react-router": ">=7.0.0"
   }
 }

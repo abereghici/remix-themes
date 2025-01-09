@@ -2,13 +2,13 @@ name: validate
 on:
   push:
     branches:
-      - '+([0-9])?(.{+([0-9]),x}).x'
-      - 'main'
-      - 'next'
-      - 'next-major'
-      - 'beta'
-      - 'alpha'
-      - '!all-contributors/**'
+      - "+([0-9])?(.{+([0-9]),x}).x"
+      - "main"
+      - "next"
+      - "next-major"
+      - "beta"
+      - "alpha"
+      - "!all-contributors/**"
   pull_request: {}
 jobs:
   main:
@@ -17,30 +17,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 🛑 Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.11.0
+        uses: styfle/cancel-workflow-action@0.12.1
 
       - name: ⬇️ Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: ⎔ Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version-file: '.nvmrc'
-          cache: 'yarn'
+          node-version-file: ".nvmrc"
+          cache: "npm"
 
       - name: 📥 Install deps
-        run: yarn --frozen-lockfile
+        run: npm install
 
       - name: ▶️ Run validate script
-        run: yarn validate
+        run: npm run validate
 
       - name: 📥 Install Playwright Browsers
         id: playwright-version
         run: |
-          echo "PLAYWRIGHT_VERSION=$(node -e "console.log(JSON.parse(require('child_process').execSync('yarn info @playwright/test version --json')).data.trim())")" >> $GITHUB_ENV
+          echo "PLAYWRIGHT_VERSION=$(node -e "console.log(JSON.parse(require('child_process').execSync('npm info @playwright/test version --json')).trim())")" >> $GITHUB_ENV
       - name: 🏎️ Cache playwright binaries
-        uses: actions/cache@v3
-        id: playwright-cache
+        uses: actions/cache@v4
+        id: planwright-cache
         with:
           path: |
             ~/.cache/ms-playwright
@@ -54,7 +54,7 @@ jobs:
         run: npx playwright test
 
       - name: 📊 Upload report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report
@@ -64,36 +64,35 @@ jobs:
   release:
     needs: main
     runs-on: ubuntu-latest
-    if:
-      ${{ github.repository == 'abereghici/remix-themes' &&
+    if: ${{ github.repository == 'abereghici/remix-themes' &&
       contains('refs/heads/main,refs/heads/beta,refs/heads/next,refs/heads/alpha',
       github.ref) && github.event_name == 'push' }}
     steps:
       - name: 🛑 Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.11.0
+        uses: styfle/cancel-workflow-action@0.12.1
 
       - name: ⬇️ Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: ⎔ Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version-file: '.nvmrc'
-          cache: 'yarn'
+          node-version-file: ".nvmrc"
+          cache: "npm"
 
       - name: 📥 Install deps
         run: |
-          cp README.md packages/remix-themes
-          node -e "let pkg=require('./package.json');pkg.workspaces=['packages/remix-themes'];require('fs').writeFileSync('./package.json',JSON.stringify(pkg),'utf8')"
-          yarn --frozen-lockfile
+          # cp README.md packages/remix-themes
+          # node -e "let pkg=require('./package.json');pkg.workspaces=['packages/remix-themes'];require('fs').writeFileSync('./package.json',JSON.stringify(pkg),'utf8')"
+          npm install
 
       - name: 🏗 Run build script
-        run: yarn build
+        run: npm run build
 
       - name: 🚀 Release
-        uses: cycjimmy/semantic-release-action@v3
+        uses: cycjimmy/semantic-release-action@v4
         with:
-          working_directory: ./packages/remix-themes
+          working_directory: .
           semantic_version: 17
           branches: |
             [

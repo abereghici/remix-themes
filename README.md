@@ -1,6 +1,6 @@
 # Remix Themes
 
-### An abstraction for themes in your [Remix](https://remix.run/) app.
+### An abstraction for themes in your React router v7 / [Remix](https://remix.run/) app.
 
 ## Features
 
@@ -31,7 +31,7 @@ $ yarn add remix-themes
 // sessions.server.tsx
 
 import {createThemeSessionResolver} from 'remix-themes'
-import { createCookieSessionStorage } from "@remix-run/node"
+import { createCookieSessionStorage } from "react-router"
 
 const sessionStorage = createCookieSessionStorage({
   cookie: {

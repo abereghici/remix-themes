@@ -22,7 +22,7 @@
     "validate": "npm-run-all --parallel typecheck lint test"
   },
   "devDependencies": {
-    "@playwright/test": "^1.30.0",
+    "@playwright/test": "^1.49.1",
     "@remix-run/eslint-config": "latest",
     "@vitest/coverage-c8": "^0.28.4",
     "cross-env": "^7.0.3",

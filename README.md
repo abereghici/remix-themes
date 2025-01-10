@@ -1,6 +1,6 @@
 # Remix Themes
 
-### An abstraction for themes in your React router v7 / [Remix](https://remix.run/) app.
+### An abstraction for themes in your [React router](https://reactrouter.com/) / [Remix](https://remix.run/) app.
 
 ## Features
 
@@ -12,10 +12,10 @@
 - ✅ Sync theme across tabs and windows
 
 Check out the
-[Example](https://github.com/abereghici/remix-themes/tree/main/packages/remix-themes-app)
+[Example](https://github.com/abereghici/remix-themes/tree/main/test-apps/react-router-app)
 to see it in action.
 
-If you are using Remix.run you can use v1.5.1 of this library or lower. V2 onwards is only react-router v7 compatible.
+If you are using Remix.run you can use v1.5.1 of this library or lower, v2 onwards is only react-router v7 compatible.
 
 ## Install
 

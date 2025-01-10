@@ -1,6 +1,6 @@
 # Remix Themes
 
-### An abstraction for themes in your [Remix](https://remix.run/) app.
+### An abstraction for themes in your React router v7 / [Remix](https://remix.run/) app.
 
 ## Features
 
@@ -14,6 +14,8 @@
 Check out the
 [Example](https://github.com/abereghici/remix-themes/tree/main/packages/remix-themes-app)
 to see it in action.
+
+If you are using Remix.run you can use v1.5.1 of this library or lower. V2 onwards is only react-router v7 compatible.
 
 ## Install
 
@@ -30,22 +32,22 @@ $ yarn add remix-themes
 ```ts
 // sessions.server.tsx
 
-import {createThemeSessionResolver} from 'remix-themes'
-import { createCookieSessionStorage } from "@remix-run/node"
+import { createThemeSessionResolver } from "remix-themes";
+import { createCookieSessionStorage } from "react-router";
 
 const sessionStorage = createCookieSessionStorage({
   cookie: {
-    name: '__remix-themes',
+    name: "__remix-themes",
     // domain: 'remix.run',
-    path: '/',
+    path: "/",
     httpOnly: true,
-    sameSite: 'lax',
-    secrets: ['s3cr3t'],
+    sameSite: "lax",
+    secrets: ["s3cr3t"],
     // secure: true,
   },
-})
+});
 
-export const themeSessionResolver = createThemeSessionResolver(sessionStorage)
+export const themeSessionResolver = createThemeSessionResolver(sessionStorage);
 ```
 
 Note: make sure you have `domain` and `secure` parameters set only for your
@@ -100,7 +102,6 @@ function App() {
         <Outlet />
         <ScrollRestoration />
         <Scripts />
-        {process.env.NODE_ENV === 'development' && <LiveReload />}
       </body>
     </html>
   )
@@ -123,10 +124,10 @@ This route is used to store the preferred theme in the session storage when
 the user changes it.
 
 ```ts
-import {createThemeAction} from 'remix-themes'
-import {themeSessionResolver} from './sessions.server'
+import { createThemeAction } from "remix-themes";
+import { themeSessionResolver } from "./sessions.server";
 
-export const action = createThemeAction(themeSessionResolver)
+export const action = createThemeAction(themeSessionResolver);
 ```
 
 ## API

@@ -15,7 +15,7 @@ Check out the
 [Example](https://github.com/abereghici/remix-themes/tree/main/test-apps/react-router-app)
 to see it in action.
 
-If you are using Remix.run you can use v1.5.1 of this library or lower, v2 onwards is only react-router v7 compatible.
+If you are using Remix.run you can use v1.6.1 of this library or lower, v2 onwards is only react-router v7 compatible.
 
 ## Install
 
@@ -59,27 +59,31 @@ these parameters on localhost.
 ```ts
 // root.tsx
 
-import {ThemeProvider, useTheme, PreventFlashOnWrongTheme} from 'remix-themes'
-import {themeSessionResolver} from './sessions.server'
+import {
+  ThemeProvider,
+  useTheme,
+  PreventFlashOnWrongTheme,
+} from "remix-themes";
+import { themeSessionResolver } from "./sessions.server";
 
 // Return the theme from the session storage using the loader
-export const loader: LoaderFunction = async ({request}) => {
-  const {getTheme} = await themeSessionResolver(request)
+export const loader: LoaderFunction = async ({ request }) => {
+  const { getTheme } = await themeSessionResolver(request);
   return {
     theme: getTheme(),
-  }
-}
+  };
+};
 
 // Wrap your app with ThemeProvider.
 // `specifiedTheme` is the stored theme in the session storage.
 // `themeAction` is the action name that's used to change the theme in the session storage.
 export default function AppWithProviders() {
-  const data = useLoaderData()
+  const data = useLoaderData();
   return (
     <ThemeProvider specifiedTheme={data.theme} themeAction="/action/set-theme">
       <App />
     </ThemeProvider>
-  )
+  );
 }
 
 // Use the theme in your app.
@@ -87,10 +91,10 @@ export default function AppWithProviders() {
 // the browser theme before hydration and will prevent a flash in browser.
 // The client code runs conditionally, it won't be rendered if we have a theme in session storage.
 function App() {
-  const data = useLoaderData()
-  const [theme] = useTheme()
+  const data = useLoaderData();
+  const [theme] = useTheme();
   return (
-    <html lang="en" data-theme={theme ?? ''}>
+    <html lang="en" data-theme={theme ?? ""}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -104,7 +108,7 @@ function App() {
         <Scripts />
       </body>
     </html>
-  )
+  );
 }
 ```
 

@@ -115,7 +115,7 @@ export function ThemeProvider({
           broadcastThemeChange({ theme: preferredTheme, definedBy: "SYSTEM" });
         });
 
-        fetcher.submit({theme: null}, {method: 'POST', action: themeAction});
+        fetcher.submit({theme: null}, {method: 'POST', action: themeAction, encType: 'application/json'});
       } else {
         ensureCorrectTransition(() => {
           setTheme(nextTheme);
@@ -123,7 +123,7 @@ export function ThemeProvider({
         });
         broadcastThemeChange({ theme: nextTheme, definedBy: "USER" });
 
-        fetcher.submit({theme: nextTheme}, {method: 'POST', action: themeAction});
+        fetcher.submit({theme: nextTheme}, {method: 'POST', action: themeAction, encType: 'application/json'});
       }
     },
     [broadcastThemeChange, ensureCorrectTransition, theme, themeAction],

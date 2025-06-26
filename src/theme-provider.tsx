@@ -9,6 +9,7 @@ import {
 } from "react";
 import { useBroadcastChannel } from "./useBroadcastChannel";
 import { useCorrectCssTransition } from "./useCorrectCssTransition";
+import {useFetcher} from "react-router";
 
 export enum Theme {
   DARK = "dark",
@@ -51,6 +52,7 @@ export function ThemeProvider({
   themeAction,
   disableTransitionOnThemeChange = false,
 }: ThemeProviderProps) {
+  const fetcher = useFetcher();
   const ensureCorrectTransition = useCorrectCssTransition({
     disableTransitions: disableTransitionOnThemeChange,
   });
@@ -113,10 +115,7 @@ export function ThemeProvider({
           broadcastThemeChange({ theme: preferredTheme, definedBy: "SYSTEM" });
         });
 
-        fetch(`${themeAction}`, {
-          method: "POST",
-          body: JSON.stringify({ theme: null }),
-        });
+        fetcher.submit({theme: null}, {method: 'POST', action: themeAction, encType: 'application/json'});
       } else {
         ensureCorrectTransition(() => {
           setTheme(nextTheme);
@@ -124,10 +123,7 @@ export function ThemeProvider({
         });
         broadcastThemeChange({ theme: nextTheme, definedBy: "USER" });
 
-        fetch(`${themeAction}`, {
-          method: "POST",
-          body: JSON.stringify({ theme: nextTheme }),
-        });
+        fetcher.submit({theme: nextTheme}, {method: 'POST', action: themeAction, encType: 'application/json'});
       }
     },
     [broadcastThemeChange, ensureCorrectTransition, theme, themeAction],
